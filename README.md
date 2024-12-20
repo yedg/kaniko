@@ -91,6 +91,7 @@ _If you are interested in contributing to kaniko, see
       - [Flag `--log-format`](#flag---log-format)
       - [Flag `--log-timestamp`](#flag---log-timestamp)
       - [Flag `--no-push`](#flag---no-push)
+      - [Flag `--no-push-cache`](#flag---no-push-cache)
       - [Flag `--oci-layout-path`](#flag---oci-layout-path)
       - [Flag `--push-retry`](#flag---push-retry)
       - [Flag `--registry-certificate`](#flag---registry-certificate)
@@ -948,6 +949,13 @@ Set this flag if you only want to build the image, without pushing to a
 registry. This can also be defined through `KANIKO_NO_PUSH` environment
 variable.
 
+NOTE: this will still push cache layers to the repo, to disable pushing cache layers use `--no-push-cache`
+
+#### Flag `--no-push-cache`
+
+Set this flag if you do not want to push cache layers to a
+registry.  Can be used in addition to `--no-push` to push no layers to a registry.
+
 #### Flag `--oci-layout-path`
 
 Set this flag to specify a directory in the container where the OCI image layout
@@ -1010,7 +1018,7 @@ Expected format is
 `original-registry=remapped-registry[;another-reg=another-remap[;...]]` for
 example.
 
-Note that you can't specify a URL with scheme for this flag. Some valid options
+Note that you **can** specify a URL with scheme for this flag. Some valid options
 are:
 
 - `index.docker.io=mirror.gcr.io`
@@ -1019,6 +1027,7 @@ are:
 - `index.docker.io=docker-io.mirrors.corp.net;index.docker.io=mirror.gcr.io;gcr.io=127.0.0.1`
   will try `docker-io.mirrors.corp.net` then `mirror.gcr.io` for
   `index.docker.io` and `127.0.0.1` for `gcr.io`
+- `docker.io=harbor.provate.io/theproject`
 
 #### Flag `--registry-mirror`
 
@@ -1030,15 +1039,16 @@ the next mirror(s), and at the end fallback on the default registry.
 Mirror can also be defined through `KANIKO_REGISTRY_MIRROR` environment
 variable.
 
-Expected format is `mirror.gcr.io` for example.
+Expected format is `mirror.gcr.io` or `mirror.gcr.io/path` for example.
 
-Note that you can't specify a URL with scheme for this flag. Some valid options
+Note that you **can** specify a URL with scheme for this flag. Some valid options
 are:
 
 - `mirror.gcr.io`
 - `127.0.0.1`
 - `192.168.0.1:5000`
 - `mycompany-docker-virtual.jfrog.io`
+- `harbor.provate.io/theproject`
 
 #### Flag `--skip-default-registry-fallback`
 
